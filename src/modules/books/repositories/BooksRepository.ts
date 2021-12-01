@@ -6,8 +6,12 @@ import { Book } from "../entities/Book";
 import { IBooksRepository } from "./IBooksRepository"
 
 
+
 @EntityRepository(Book)
 class BooksRepository implements IBooksRepository {
+    findByName(name: string): Promise<Book> {
+        throw new Error("Method not implemented.");
+    }
     async create(name: string): Promise<Book> {
         const client = new Client({
             user: "postgres",
@@ -35,8 +39,33 @@ class BooksRepository implements IBooksRepository {
     delete(id: string): Promise<void> {
         throw new Error("Method not implemented.");
     }
-    find(id: string): Promise<Book> {
-        throw new Error("Method not implemented.");
+    async findById(id: string): Promise<Book> {
+        const client = new Client({
+            user: "postgres",
+            password: "postgres",
+            host: "localhost",
+            port: 5432,
+            database: "library"
+        })
+
+        await client.connect()
+
+        const text = 'SELECT * FROM book WHERE book.id = $1'
+
+        const value = [id]
+
+        try {
+            const { rows } = await client.query(text, value)
+            const book = rows[0]
+
+            return book as Book
+
+        } catch(err) {
+            return
+        }
+
+
+        
     }
     update(id: string): Promise<Book> {
         throw new Error("Method not implemented.");
