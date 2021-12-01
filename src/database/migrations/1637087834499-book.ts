@@ -9,7 +9,8 @@ export class book1637087834499 implements MigrationInterface {
                 columns: [
                     {
                         name: "id",
-                        type: "numeric"
+                        type: "uuid",
+                        isPrimary: true
                     },
                     {
                         name: "name",

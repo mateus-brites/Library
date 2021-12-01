@@ -17,3 +17,5 @@ client.query('SELECT $1::text as message', ['Hello word'])
     client.end()
     }
 )
+
+export { client }
