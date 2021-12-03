@@ -59,8 +59,28 @@ class BooksRepository implements IBooksRepository {
 
         return;
     }
-    delete(id: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async delete(id: string): Promise<void> {
+        const clientpg = new Client({
+            user: "postgres",
+            password: "postgres",
+            host: "localhost",
+            port: 5432,
+            database: "library"
+        })
+        await clientpg.connect()
+
+        const text = "DELETE FROM book WHERE book.id = $1"
+
+        try {
+            await clientpg.query(text, [id]);
+
+            await clientpg
+                .end()
+                .then(() => console.log("client has disconnected"))
+            return
+        } catch {
+            return
+        }
     }
     async findById(id: string): Promise<Book> {
         const clientpg = new Client({

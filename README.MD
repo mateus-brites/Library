@@ -1,7 +1,7 @@
 # Livro
 [X] Deve ser possível cadastrar um livro
 
-[] Deve ser possível excluir um livro informando seu id
+[X] Deve ser possível excluir um livro informando seu id
 
 [X] Deve ser possível encontrar um livro mencionando o seu nome
 

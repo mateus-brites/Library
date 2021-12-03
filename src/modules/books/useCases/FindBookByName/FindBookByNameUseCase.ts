@@ -9,9 +9,7 @@ class FindBookByNameUseCase {
 
         const books = await booksRepository.findByName(name);
 
-        if (!books) {
-            throw new AppError("Book not found");
-        }
+        console.log(books);
 
         return books;
     }
