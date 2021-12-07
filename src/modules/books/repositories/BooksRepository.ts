@@ -113,12 +113,63 @@ class BooksRepository implements IBooksRepository {
 
         
     }
-    update(id: string): Promise<Book> {
-        throw new Error("Method not implemented.");
+    async rent(id: string): Promise<Book> {
+        const clientpg = new Client({
+            user: "postgres",
+            password: "postgres",
+            host: "localhost",
+            port: 5432,
+            database: "library"
+        })
+        await clientpg.connect()
+
+        const text = "UPDATE book SET available = false WHERE book.id = $1"
+
+        try {
+            await clientpg.query(text, [id]);
+
+            await clientpg
+                .end()
+                .then(() => console.log("client has disconnected"))
+
+            const book = this.findById(id);
+
+            return book;
+            
+        } catch(err) {
+            console.log(err);
+            return
+        }
     }
-    findByCategory(category: string): Promise<Book> {
-        throw new Error("Method not implemented.");
+
+    async replace(id: string): Promise<void> {
+        const clientpg = new Client({
+            user: "postgres",
+            password: "postgres",
+            host: "localhost",
+            port: 5432,
+            database: "library"
+        })
+        await clientpg.connect()
+
+        const text = "UPDATE book SET available = true WHERE book.id = $1"
+
+        try {
+            await clientpg.query(text, [id]);
+
+            await clientpg
+                .end()
+                .then(() => console.log("client has disconnected"))
+
+            return;
+            
+        } catch(err) {
+            console.log(err);
+            return
+        }
     }
+
+    
 }
 
 export { BooksRepository }
